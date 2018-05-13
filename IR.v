@@ -4,5 +4,9 @@ module IR(clk, rst, writeEn, in, out);
   input clk, rst;
   always @ (posedge clk, posedge rst) begin
     if(rst) out <= 8'b0;
-    else
+    else begin
+      if(writeEn) begin
+        out <= in;
+      end
+    end
   end
