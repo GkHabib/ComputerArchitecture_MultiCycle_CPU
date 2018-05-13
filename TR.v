@@ -2,22 +2,18 @@ module TR (clk, rst, ld, in, out);
 
   input clk, rst, ld;
   input[12:0] in;
-  output[12:0] out;
-
-  reg[12:0] outReg;
+  output reg[12:0] out;
 
   always @ ( posedge clk, posedge rst ) begin
-    outReg <= outReg;
+    out <= out;
     if (rst) begin
-      outReg <= 13'b0;
+      out <= 13'b0;
     end
     else begin
       if (ld) begin
-        outReg <= in;
+        out <= in;
       end
     end
   end
-
-  assign out = outReg;
 
 endmodule // TR
