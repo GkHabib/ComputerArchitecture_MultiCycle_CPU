@@ -2,22 +2,18 @@ module DI (clk, rst, ld, in, out);
 
   input clk, rst, ld;
   input[4:0] in;
-  output[4:0] out;
-
-  reg[4:0] outReg;
+  output reg[4:0] out;
 
   always @ ( posedge clk, posedge rst ) begin
-    outReg <= outReg;
+    out <= out;
     if (rst) begin
-      outReg <= 5'b0;
+      out <= 5'b0;
     end
     else begin
       if (ld) begin
-        outReg <= in;
+        out <= in;
       end
     end
   end
-
-  assign out = outReg;
 
 endmodule // DI
