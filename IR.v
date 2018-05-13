@@ -10,3 +10,4 @@ module IR(clk, rst, writeEn, in, out);
       end
     end
   end
+endmodule
