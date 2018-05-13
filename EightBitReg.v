@@ -1,4 +1,4 @@
-module IR(clk, rst, writeEn, in, out);
+module EightBitReg(clk, rst, writeEn, in, out);
   input[7:0] in;
   output reg[7:0] out;
   input clk, rst;
