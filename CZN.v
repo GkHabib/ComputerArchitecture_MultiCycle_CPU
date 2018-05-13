@@ -1,6 +1,7 @@
-module CZN (clk, rst, ld, out);
+module CZN (clk, rst, ld, in, out);
 
   input clk, rst, ld;
+  input[2:0] in;
   output[2:0] out;
 
   always @ ( posedge clk, posedge rst ) begin
