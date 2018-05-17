@@ -9,7 +9,7 @@ module ALU (a, b, opControl, c, result, czn);
 
   always @ ( a, b, c, opControl ) begin
     case(opControl)
-    ADD: {czn[0], result} <= a + b + c;
+    ADD: {czn[0], result} = a + b + c;
     AND: result <= a & b;
     OR: result <= a | b;
     endcase
