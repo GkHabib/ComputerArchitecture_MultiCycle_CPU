@@ -10,11 +10,13 @@ module PC (clk, rst, inData, outData, inc, loadEn);
     else begin
       if(loadEn) begin
         outData <= inData;
-        else begin
+      end
+      else begin
           if(inc) begin
             outData = outData + 1;
           end
-        end
+      end
     end
   end
+
 endmodule // PC
