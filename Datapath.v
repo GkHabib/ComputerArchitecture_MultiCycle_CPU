@@ -2,7 +2,7 @@ module Datapath (clk, rst, pcInc, reg1Or2, PcOrTR, regOrMem, RegBOr0, RegAOr0, D
     CznToCU, pcLoadEn, diLoadEn, accumulatorWriteEn, memoryReadEn, memoryWriteEn,
     irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluOpControl, aluResWriteEn, ldCZN);
 
-    input clk, rst, reg1Or2, PcOrTR, regOrMem, RegBOr0, RegAOr0, pcLoadEn, diLoadEn, accumulatorWriteEn,
+    input clk, rst, pcInc, reg1Or2, PcOrTR, regOrMem, RegBOr0, RegAOr0, pcLoadEn, diLoadEn, accumulatorWriteEn,
       memoryReadEn, memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN;
     input [1:0] aluOpControl;
     output [4:0] diToCU;
