@@ -12,6 +12,7 @@ module ALU (a, b, opControl, c, result, czn);
     ADD: {czn[2], result} <= a + b + c;
     AND: result <= a & b;
     OR: result <= a | b;
+    endcase
   end
 
   assign czn[1] = (result == 0);
