@@ -1,7 +1,7 @@
 module Memory (clk, rst, inData, address, outData, readEn, writeEn);
   input clk, rst;
   input [7:0] inData;
-  input [12:0] adress;
+  input [12:0] address;
   output reg [7:0] outData;
   reg [7:0] memArr [8191:0];
   input readEn, writeEn;
