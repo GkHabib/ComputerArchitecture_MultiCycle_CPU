@@ -5,7 +5,7 @@ module Datapath (clk, rst, pcInc, reg1Or2, PcOrTR, regOrMem, RegBOr0, RegAOr0, D
     input clk, rst, pcInc, reg1Or2, PcOrTR, regOrMem, RegBOr0, RegAOr0, pcLoadEn, diLoadEn, accumulatorWriteEn,
       memoryReadEn, memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN;
     input [1:0] aluOpControl;
-    output [4:0] diToCU;
+    output [4:0] DiToCU;
     output [3:0] IrToCU;
     output [2:0] CznToCU;
     wire [12:0] pcOut, trOut, memAddr;
@@ -29,6 +29,9 @@ module Datapath (clk, rst, pcInc, reg1Or2, PcOrTR, regOrMem, RegBOr0, RegAOr0, D
     ALU ALU_ (.a(aluIn1), .b(aluIn2), .opControl(aluOpControl), .c(cznOut[0]), .result(aluOut), .czn(cznIn));
     EightBitReg ALUResult_ (.clk(clk), .rst(rst), .writeEn(aluResWriteEn), .in(aluOut), .out(aluResOut));
     CZN CZN_ (.clk(clk), .rst(rst), .ld(ldCZN), .in(cznIn), .out(cznOut));
+    assign DiToCU = (diOut);
+    assign IrToCU = (irOut[4:0]);
+    assign CznToCU = (cznOut);
 
 
 endmodule // Datapath
