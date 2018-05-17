@@ -2,7 +2,7 @@ module CZN (clk, rst, ld, in, out);
 
   input clk, rst, ld;
   input[2:0] in;
-  output[2:0] out;
+  output reg[2:0] out;
 
   always @ ( posedge clk, posedge rst ) begin
     out <= out;
