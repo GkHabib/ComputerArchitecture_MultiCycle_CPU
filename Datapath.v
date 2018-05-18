@@ -15,7 +15,7 @@ module Datapath (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, RegA
     wire [1:0] accumulatorAddr;
     PC PC_ (.clk(clk), .rst(rst), .inData(trOut), .outData(pcOut), .inc(pcInc), .loadEn(pcLoadEn));
     DI DI_ (.clk(clk), .rst(rst), .ld(diLoadEn), .in(irOut[4:0]), .out(diOut));
-    ThreeTwoBitInputMUX AccumulatorAddressMUX_ (.a(diOut[4:3]), .b(irOut[1:0]), .c(irOut[3:2]), .sel(accAddressSel), .out(accumulatorAddr));
+    ThreeTwoBitInputMUX AccumulatorAddressMUX_ (.in1(diOut[4:3]), .in2(irOut[1:0]), .in3(irOut[3:2]), .sel(accAddressSel), .out(accumulatorAddr));
     Accumulator Accumulator_ (.clk(clk), .rst(rst), .inData(aluResOut), .address(accumulatorAddr), .outData(accumulatorOut), .writeEn(accumulatorWriteEn));
     TwoThirteenBitInputMUX MemoryAddressMUX_ (.a(trOut), .b(pcOut), .sel(PcOrTR), .out(memAddr));
     Memory Memory_ (.clk(clk), .rst(rst), .inData(aluResOut), .address(memAddr), .outData(memoryOut), .readEn(memoryReadEn), .writeEn(memoryWriteEn));
