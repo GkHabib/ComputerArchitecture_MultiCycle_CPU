@@ -1,9 +1,9 @@
 module Datapath (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, RegAOr0, DiToCU, IrToCU,
-    CznToCU, pcLoadEn, diLoadEn, accumulatorWriteEn, memoryReadEn, memoryWriteEn,
+    CznToCU, pcLoadEn, diLoadEn, accumulatorWriteEn, memoryWriteEn,
     irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluOpControl, aluResWriteEn, ldCZN);
 
     input clk, rst, pcInc, PcOrTR, regOrMem, RegBOr0, RegAOr0, pcLoadEn, diLoadEn, accumulatorWriteEn,
-      memoryReadEn, memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN;
+       memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN;
     input [1:0] aluOpControl, accAddressSel;
     output [4:0] DiToCU;
     output [3:0] IrToCU;
@@ -18,7 +18,7 @@ module Datapath (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, RegA
     ThreeTwoBitInputMUX AccumulatorAddressMUX_ (.in1(diOut[4:3]), .in2(irOut[1:0]), .in3(irOut[3:2]), .sel(accAddressSel), .out(accumulatorAddr));
     Accumulator Accumulator_ (.clk(clk), .rst(rst), .inData(aluResOut), .address(accumulatorAddr), .outData(accumulatorOut), .writeEn(accumulatorWriteEn));
     TwoThirteenBitInputMUX MemoryAddressMUX_ (.a(trOut), .b(pcOut), .sel(PcOrTR), .out(memAddr));
-    Memory Memory_ (.clk(clk), .rst(rst), .inData(aluResOut), .address(memAddr), .outData(memoryOut), .readEn(memoryReadEn), .writeEn(memoryWriteEn));
+    Memory Memory_ (.clk(clk), .rst(rst), .inData(aluResOut), .address(memAddr), .outData(memoryOut), .writeEn(memoryWriteEn));
     EightBitReg IR_ (.clk(clk), .rst(rst), .writeEn(irWriteEn), .in(memoryOut), .out(irOut));
     TR TR_ (.clk(clk), .rst(rst), .ld(trWriteEn), .in({irOut[4:0], memoryOut}), .out(trOut));
     TwoEightBitInputMUX BRegInputMUX_ (.a(memoryOut), .b(accumulatorOut), .sel(regOrMem), .out(bRegInput));
