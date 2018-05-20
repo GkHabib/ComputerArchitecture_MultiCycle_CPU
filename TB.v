@@ -16,6 +16,6 @@ module TB ();
     #20
     start=0;
     #20
-    repeat (50) #20 clk=~clk;
+    repeat (500) #20 clk=~clk;
   end
 endmodule // TB
