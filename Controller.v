@@ -1,5 +1,5 @@
 module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, RegAOr0, DiToCU, IrToCU,
-    CznToCU, pcLoadEn, diLoadEn, accumulatorWriteEn, memoryReadEn, memoryWriteEn,
+    CznToCU, pcLoadEn, diLoadEn, accumulatorWriteEn, memoryWriteEn,
     irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluOpControl, aluResWriteEn, ldCZN);
 
     input [4:0] DiToCU;
@@ -7,28 +7,42 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
     input [2:0] CznToCU;
     input clk, rst, start;
     output reg done, pcInc, PcOrTR, regOrMem, RegBOr0, RegAOr0, pcLoadEn, diLoadEn, accumulatorWriteEn,
-       memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN;
+      memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN;
     output reg [1:0] aluOpControl, accAddressSel;
 
-    reg[4:0] ps, ns;
-    //parameter[]  parameter_name = parameter_value,
+    reg[3:0] ps, ns;
+    parameter[3:9]  IDLE = 0, START = 1, FETCH = 2, FETCH16ORNOT = 3,
+      LDADDNACC = 4, CALC16 = 5, LDACC = 6, CALC = 7, LDADDINPC = 8, WRINACC = 9;
     always @ ( ps, start, DiToCU, IrToCU, CznToCU ) begin
       ns <= ps;
       case(ps)
         IDLE: ns <= (start == 1) ? START : ps;
         START: ns <= (start == 0) ? FETCH : ps;
-        FETCH: ns <=
-        FETCH16:
-        LDDATA:
-        WRDATAINREG:
-        CALC:
-        REWRDATA:
-        LDI:
-        LDFIRSTREG:
-        LDSECREG:
-        WRALURES:
-        WRINACC:
-
+        FETCH: ns <= FETCH16;
+        FETCH16ORNOT: begin
+            if ((IrToCU[7] == 1'b0) | (IrToCU[7:5] == 3'b110)) begin
+              ns <= LDADDNACC;
+            end
+            else if (IrToCU[7:5] == 3'b111) begin
+              ns <= FETCH;
+            end
+            else begin
+              ns <= LDACC;
+            end
+          end
+        LDADDNACC: begin
+            if (IrToCU[7:5] == 3'b110) begin
+              ns <= LDADDINPC;
+            end
+            else begin
+              ns <= CALC16;
+            end
+          end
+        // CALC16: ns <= FETCH;
+        LDACC: ns <= CALC;
+        CALC: ns <= WRINACC;
+        LDADDINPC: ns <= FETCH;
+        WRINACC: ns <= FETCH;
       endcase
     end
 
@@ -42,12 +56,46 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
     aluOpControl <= 2'b00; accAddressSel <= 2'b00;
     case (ps)
       IDLE: done <= 1;
-      FETCH: begin memoryReadEn <= 1; PcOrTR <= 1; irWriteEn <= 1; pcInc <= 1; end
-      FETCH16: begin memoryReadEn <= 1; PcOrTR <= 1; irWriteEn <= 1; pcInc <= 1; trWriteEn <= 1; end
-      LDDATA: begin memoryReadEn <= 1; end
-      WRDATAINREG: begin aRegWriteEn <= 1; bRegWriteEn <= 1; end
-      //CALC: begin decide on opcode  end
-      //REWRDATA:
+      FETCH: begin PcOrTR <= 1; irWriteEn <= 1; pcInc <= 1; end
+      FETCH16ORNOT: begin
+          if((IrToCU[7] == 1'b0) | (IrToCU[7:5] == 3'b110)) begin
+            trWriteEn <= 1; PcOrTR <= 1; pcInc <= 1; ?
+          end
+          else if (IrToCU[7:5] == 3'b111) begin
+            diLoadEn <= 1;
+          end
+          else begin
+            accAddressSel <= 2'b01; regOrMem <= 1; bRegWriteEn <= 1;
+          end
+        end
+      LDACC: begin accAddressSel <= 2'b10; aRegWriteEn <= 1; end
+      LDADDNACC: begin bRegWriteEn <= 1; aRegWriteEn <= 1; accAddressSel <= 2'b01; end
+      // CALC16: begin
+      //     case (IrToCU[7:5])
+      //       3'b000:
+      //       3'b001:
+      //       3'b010:
+      //       3'b011:
+      //     endcase
+      //   end
+      CALC: begin
+          aluResWriteEn <= 1;
+          case (IrToCU[5:4])
+            2'b00: begin RegBOr0 <= 1; end
+            2'b01: begin ldCZN <= 1; end
+            2'b10: begin ldCZN <= 1; aluOpControl <= 2'b01; end
+            2'b11: begin ldCZN <= 1; aluOpControl <= 2'b10; end
+          endcase
+        end
+      LDADDINPC: begin
+          case (DiToCU[2:1])
+            2'b00: pcLoadEn <= 1;
+            2'b01: pcLoadEn <= CznToCU[2] == 1 ? 1 : 0;
+            2'b10: pcLoadEn <= CznToCU[1] == 1 ? 1 : 0;
+            2'b11: pcLoadEn <= CznToCU[0] == 1 ? 1 : 0;
+          endcase
+        end
+      WRINACC: begin accAddressSel <= 2'b01; accumulatorWriteEn <= 1; end
 
     endcase
     end
