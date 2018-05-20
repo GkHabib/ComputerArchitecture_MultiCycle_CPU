@@ -20,7 +20,7 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
         START: ns <= (start == 0) ? FETCH : ps;
         FETCH: ns <= FETCH16ORNOT;
         FETCH16ORNOT: begin
-            if ((IrToCU[7] == 1'b0) | (IrToCU[7:5] == 3'b110)) begin
+            if ((IrToCU[3] == 1'b0) | (IrToCU[3:1] == 3'b110)) begin
               ns <= LDADDNACC;
             end
             else if (IrToCU[7:5] == 3'b111) begin
