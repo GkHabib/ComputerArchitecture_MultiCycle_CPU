@@ -1,4 +1,4 @@
-module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, RegAOr0, DiToCU, IrToCU,
+module Controller (clk, rst, pcInc, done, accAddressSel, PcOrTR, regOrMem, RegBOr0, RegAOr0, DiToCU, IrToCU,
     CznToCU, pcLoadEn, diLoadEn, accumulatorWriteEn, memoryWriteEn,
     irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluOpControl, aluResWriteEn, ldCZN);
 
