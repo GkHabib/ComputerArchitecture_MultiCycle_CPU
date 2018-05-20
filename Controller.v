@@ -16,8 +16,8 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
     always @ ( ps, start, DiToCU, IrToCU, CznToCU ) begin
       ns <= ps;
       case(ps)
-        IDLE: ns <= (start == 1) ? START : ps;
-        START: ns <= (start == 0) ? FETCH : ps;
+        IDLE: ns <= (start) ? START : ps;
+        START: ns <= (!start) ? FETCH : ps;
         FETCH: ns <= FETCH16ORNOT;
         FETCH16ORNOT: begin
             if ((IrToCU[3] == 1'b0) | (IrToCU[3:1] == 3'b110)) begin
