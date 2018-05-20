@@ -7,7 +7,7 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
     input [2:0] CznToCU;
     input clk, rst, start;
     output reg done, pcInc, PcOrTR, regOrMem, RegBOr0, RegAOr0, pcLoadEn, diLoadEn, accumulatorWriteEn,
-      memoryReadEn, memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN;
+       memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN;
     output reg [1:0] aluOpControl, accAddressSel;
 
     reg[4:0] ps, ns;
@@ -17,9 +17,7 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
       case(ps)
         IDLE: ns <= (start == 1) ? START : ps;
         START: ns <= (start == 0) ? FETCH : ps;
-        FETCH: begin
-            case(IrToCU[])
-          end
+        FETCH: ns <=
         FETCH16:
         LDDATA:
         WRDATAINREG:
@@ -49,7 +47,7 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
       LDDATA: begin memoryReadEn <= 1; end
       WRDATAINREG: begin aRegWriteEn <= 1; bRegWriteEn <= 1; end
       //CALC: begin decide on opcode  end
-      //REWRDATA: 
+      //REWRDATA:
 
     endcase
     end
