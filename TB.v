@@ -6,7 +6,7 @@ module TB ();
     #20
     rst=1;
     #20
-    rst=0
+    rst=0;
     #20
   end
   initial begin
