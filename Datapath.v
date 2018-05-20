@@ -30,7 +30,7 @@ module Datapath (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, RegA
     EightBitReg ALUResult_ (.clk(clk), .rst(rst), .writeEn(aluResWriteEn), .in(aluOut), .out(aluResOut));
     CZN CZN_ (.clk(clk), .rst(rst), .ld(ldCZN), .in(cznIn), .out(cznOut));
     assign DiToCU = (diOut);
-    assign IrToCU = (irOut[4:0]);
+    assign IrToCU = (irOut[7:4]);
     assign CznToCU = (cznOut);
 
 
