@@ -50,8 +50,8 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
     done <= 0; pcInc <= 0; PcOrTR <= 0; regOrMem <= 0;
     RegBOr0 <= 0; RegAOr0 <= 0;
     pcLoadEn <= 0; diLoadEn <= 0; accumulatorWriteEn <= 0;
-    memoryReadEn <= 0; memoryWriteEn <= 0; irWriteEn <= 0;
-    trWriteEn <= 0; bRegWriteEn <= 0; aRegWriteEn <= 0; aluResWriteEn <= 0;
+    memoryWriteEn <= 0; irWriteEn <= 0; trWriteEn <= 0;
+    bRegWriteEn <= 0; aRegWriteEn <= 0; aluResWriteEn <= 0;
     ldCZN <= 0;
     aluOpControl <= 2'b00; accAddressSel <= 2'b00;
     case (ps)
