@@ -8,6 +8,10 @@ module TB ();
     #20
     rst=0;
     #20
+    start=1;
+    #20
+    start=0;
+    #20
     repeat (50) #20 clk=~clk;
   end
 endmodule // TB
