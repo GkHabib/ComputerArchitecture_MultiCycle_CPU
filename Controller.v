@@ -60,7 +60,7 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
       FETCH: begin PcOrTR <= 1; irWriteEn <= 1; pcInc <= 1; end
       FETCH16ORNOT: begin
           if((IrToCU[7] == 1'b0) | (IrToCU[7:5] == 3'b110)) begin
-            trWriteEn <= 1; PcOrTR <= 1; pcInc <= 1; ?
+            trWriteEn <= 1; PcOrTR <= 1; pcInc <= 1;
           end
           else if (IrToCU[7:5] == 3'b111) begin
             diLoadEn <= 1;
