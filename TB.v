@@ -10,6 +10,10 @@ module TB ();
     #20
     start=1;
     #20
+    clk=1;
+    #20
+    clk=0;
+    #20
     start=0;
     #20
     repeat (50) #20 clk=~clk;
