@@ -12,7 +12,7 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
 
     reg[3:0] ps, ns;
     parameter[3:9]  IDLE = 0, START = 1, FETCH = 2, FETCH16ORNOT = 3,
-      LDADDNACC = 4, CALC16 = 5, LDACC = 6, CALC = 7, LDADDINPC = 8, WRINACC = 9;
+      LDADDNACC = 4, CALC16 = 5, LDACC = 6, CALC = 7, LDADDINPC = 8, WRINACC = 9, WRRESINACCORMEM = 10;
     always @ ( ps, start, DiToCU, IrToCU, CznToCU ) begin
       ns <= ps;
       case(ps)
@@ -38,7 +38,8 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
               ns <= CALC16;
             end
           end
-        // CALC16: ns <= FETCH;
+        CALC16: ns <= WRRESINACCORMEM;
+        WRRESINACCORMEM: ns <= FETCH;
         LDACC: ns <= CALC;
         CALC: ns <= WRINACC;
         LDADDINPC: ns <= FETCH;
@@ -70,14 +71,23 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
         end
       LDACC: begin accAddressSel <= 2'b10; aRegWriteEn <= 1; end
       LDADDNACC: begin bRegWriteEn <= 1; aRegWriteEn <= 1; accAddressSel <= 2'b01; end
-      // CALC16: begin
-      //     case (IrToCU[7:5])
-      //       3'b000:
-      //       3'b001:
-      //       3'b010:
-      //       3'b011:
-      //     endcase
-      //   end
+      CALC16: begin
+          aluResWriteEn <= 1;
+          case (IrToCU[7:5])
+            3'b000: begin ldCZN <= 1; RegAOr0 <= 1; end
+            3'b001: begin RegBOr0 <= 1; end
+            3'b010: begin ldCZN <= 1; end
+            3'b011: begin ldCZN <= 1; aluOpControl <= 2'b01; end
+          endcase
+        end
+      WRRESINACCORMEM: begin
+          case (IrToCU[7:5])
+            3'b000: begin accumulatorWriteEn <= 1; end
+            3'b001: begin memoryWriteEn <= 1; end
+            3'b010: begin accumulatorWriteEn <= 1;  end
+            3'b011: begin accumulatorWriteEn <= 1;  end
+          endcase
+        end
       CALC: begin
           aluResWriteEn <= 1;
           case (IrToCU[5:4])
