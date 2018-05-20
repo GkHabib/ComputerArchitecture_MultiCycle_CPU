@@ -11,13 +11,8 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
     output reg [1:0] aluOpControl, accAddressSel;
 
     reg[3:0] ps, ns;
-<<<<<<< HEAD
-    parameter[3:9]  IDLE = 0, START = 1, FETCH = 2, FETCH16ORNOT = 3,
-      LDADDNACC = 4, CALC16 = 5, LDACC = 6, CALC = 7, LDADDINPC = 8, WRINACC = 9, WRRESINACCORMEM = 10;
-=======
     parameter[3:0]  IDLE = 0, START = 1, FETCH = 2, FETCH16ORNOT = 3,
-      LDADDNACC = 4, CALC16 = 5, LDACC = 6, CALC = 7, LDADDINPC = 8, WRINACC = 9;
->>>>>>> fc15bbae0462fcde6c6e3ded5f87cecf166a3179
+      LDADDNACC = 4, CALC16 = 5, LDACC = 6, CALC = 7, LDADDINPC = 8, WRINACC = 9, WRRESINACCORMEM = 10;
     always @ ( ps, start, DiToCU, IrToCU, CznToCU ) begin
       ns <= ps;
       case(ps)
