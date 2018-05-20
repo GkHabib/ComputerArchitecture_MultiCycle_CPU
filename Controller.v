@@ -18,7 +18,7 @@ module Controller (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, Re
       case(ps)
         IDLE: ns <= (start == 1) ? START : ps;
         START: ns <= (start == 0) ? FETCH : ps;
-        FETCH: ns <= FETCH16;
+        FETCH: ns <= FETCH16ORNOT;
         FETCH16ORNOT: begin
             if ((IrToCU[7] == 1'b0) | (IrToCU[7:5] == 3'b110)) begin
               ns <= LDADDNACC;
