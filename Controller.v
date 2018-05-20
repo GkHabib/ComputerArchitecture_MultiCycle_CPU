@@ -23,7 +23,7 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
             if ((IrToCU[3] == 1'b0) | (IrToCU[3:1] == 3'b110)) begin
               ns <= LDADDNACC;
             end
-            else if (IrToCU[7:5] == 3'b111) begin
+            else if (IrToCU[3:1] == 3'b111) begin
               ns <= FETCH;
             end
             else begin
@@ -31,7 +31,7 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
             end
           end
         LDADDNACC: begin
-            if (IrToCU[7:5] == 3'b110) begin
+            if (IrToCU[3:1] == 3'b110) begin
               ns <= LDADDINPC;
             end
             else begin
@@ -59,10 +59,10 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
       IDLE: done <= 1;
       FETCH: begin PcOrTR <= 1; irWriteEn <= 1; pcInc <= 1; end
       FETCH16ORNOT: begin
-          if((IrToCU[7] == 1'b0) | (IrToCU[7:5] == 3'b110)) begin
+          if((IrToCU[3] == 1'b0) | (IrToCU[3:1] == 3'b110)) begin
             trWriteEn <= 1; PcOrTR <= 1; pcInc <= 1;
           end
-          else if (IrToCU[7:5] == 3'b111) begin
+          else if (IrToCU[3:1] == 3'b111) begin
             diLoadEn <= 1;
           end
           else begin
@@ -73,7 +73,7 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
       LDADDNACC: begin bRegWriteEn <= 1; aRegWriteEn <= 1; accAddressSel <= 2'b01; end
       CALC16: begin
           aluResWriteEn <= 1;
-          case (IrToCU[7:5])
+          case (IrToCU[3:1])
             3'b000: begin ldCZN <= 1; RegAOr0 <= 1; end
             3'b001: begin RegBOr0 <= 1; end
             3'b010: begin ldCZN <= 1; end
@@ -81,7 +81,7 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
           endcase
         end
       WRRESINACCORMEM: begin
-          case (IrToCU[7:5])
+          case (IrToCU[3:1])
             3'b000: begin accumulatorWriteEn <= 1; end
             3'b001: begin memoryWriteEn <= 1; end
             3'b010: begin accumulatorWriteEn <= 1;  end
@@ -90,7 +90,7 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
         end
       CALC: begin
           aluResWriteEn <= 1;
-          case (IrToCU[5:4])
+          case (IrToCU[1:0])
             2'b00: begin RegBOr0 <= 1; end
             2'b01: begin ldCZN <= 1; end
             2'b10: begin ldCZN <= 1; aluOpControl <= 2'b01; end
