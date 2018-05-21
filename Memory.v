@@ -55,15 +55,15 @@ module Memory (clk, rst, inData, address, outData, writeEn);
     memArr[34]= 8'b00100111;// STA
     memArr[35]= 8'b11010001;// STA
     memArr[36]= 8'b00000000;
-    memArr[1000]= 8'b00011010;
-    memArr[1001]= 8'b00011010;
-    memArr[1002]= 8'b00011010;
-    memArr[1003]= 8'b00011010;
-    memArr[1004]= 8'b00011010;
-    memArr[1005]= 8'b00011010;
+    memArr[1000]= 8'b00001010;
+    memArr[1001]= 8'b00001110;
+    memArr[1002]= 8'b00000010;
+    memArr[1003]= 8'b00001111;
+    memArr[1004]= 8'b00000011;
+    memArr[1005]= 8'b00000001;
     memArr[1006]= 8'b00011010;
-    memArr[1007]= 8'b00011010;
-    memArr[1008]= 8'b00011010;
-    memArr[1009]= 8'b00011010; //sum of all=260 = 0001 0000 0100
+    memArr[1007]= 8'b00001110;
+    memArr[1008]= 8'b00001010;
+    memArr[1009]= 8'b00000001; //sum of all=260 = 0001 0000 0100
   end
 endmodule // Memory
