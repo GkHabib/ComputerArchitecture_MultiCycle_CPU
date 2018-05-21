@@ -9,7 +9,10 @@ module Accumulator (clk, rst, inData, address, outData, writeEn);
 
   always @ ( posedge clk, posedge rst ) begin
     if (rst) begin
-      //nothing for now :|
+      regArr[0] = 8'b00000000;
+      regArr[1] = 8'b00000000;
+      regArr[2] = 8'b00000000;
+      regArr[3] = 8'b00000000;
     end
     else begin
       if (writeEn) begin
