@@ -10,7 +10,7 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
       memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN;
     output reg [1:0] aluOpControl, accAddressSel;
 
-    reg[3:0] ps, ns;
+    reg[4:0] ps, ns;
     parameter[4:0]  IDLE = 0, START = 1, FETCH = 2, FETCH16ORNOT = 3,
       LDADDNACC = 4, CALC16 = 5, LDACC = 6, CALC = 7, LDADDINPC = 8, WRINACC = 9, WRRESINACCORMEM = 10;
     always @ ( ps, start, DiToCU, IrToCU, CznToCU ) begin
