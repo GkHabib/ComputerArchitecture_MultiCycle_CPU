@@ -70,7 +70,7 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
           end
         end
       LDACC: begin accAddressSel <= 2'b10; aRegWriteEn <= 1; end
-      LDADDNACC: begin bRegWriteEn <= 1; aRegWriteEn <= 1; accAddressSel <= 2'b01; end
+      LDADDNACC: begin bRegWriteEn <= 1; aRegWriteEn <= 1; accAddressSel <= 2'b00; end
       CALC16: begin
           aluResWriteEn <= 1;
           case (IrToCU[3:1])
