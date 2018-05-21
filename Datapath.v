@@ -1,9 +1,9 @@
 module Datapath (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, RegAOr0, DiToCU, IrToCU,
     CznToCU, pcLoadEn, diLoadEn, accumulatorWriteEn, memoryWriteEn,
-    irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluOpControl, aluResWriteEn, ldCZN);
+    irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluOpControl, aluResWriteEn, ldCZN, CC);
 
     input clk, rst, pcInc, PcOrTR, regOrMem, RegBOr0, RegAOr0, pcLoadEn, diLoadEn, accumulatorWriteEn,
-       memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN;
+       memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN, CC;
     input [1:0] aluOpControl, accAddressSel;
     output [4:0] DiToCU;
     output [3:0] IrToCU;
@@ -26,7 +26,7 @@ module Datapath (clk, rst, pcInc, accAddressSel, PcOrTR, regOrMem, RegBOr0, RegA
     EightBitReg AReg_ (.clk(clk), .rst(rst), .writeEn(aRegWriteEn), .in(accumulatorOut), .out(aRegOutput));
     TwoEightBitInputMUX BRegToALuMUX_ (.a(bRegOutput), .b(8'b0), .sel(RegBOr0), .out(aluIn1));
     TwoEightBitInputMUX ARegToALuMUX_ (.a(aRegOutput), .b(8'b0), .sel(RegAOr0), .out(aluIn2));
-    ALU ALU_ (.a(aluIn1), .b(aluIn2), .opControl(aluOpControl), .c(cznOut[0]), .result(aluOut), .czn(cznIn));
+    ALU ALU_ (.a(aluIn1), .b(aluIn2), .opControl(aluOpControl), .c(cznOut[0]), .result(aluOut), .czn(cznIn), .CC(CC));
     EightBitReg ALUResult_ (.clk(clk), .rst(rst), .writeEn(aluResWriteEn), .in(aluOut), .out(aluResOut));
     CZN CZN_ (.clk(clk), .rst(rst), .ld(ldCZN), .in(cznIn), .out(cznOut));
     assign DiToCU = (diOut);

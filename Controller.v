@@ -1,13 +1,13 @@
 module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem, RegBOr0, RegAOr0, DiToCU, IrToCU,
     CznToCU, pcLoadEn, diLoadEn, accumulatorWriteEn, memoryWriteEn,
-    irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluOpControl, aluResWriteEn, ldCZN);
+    irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluOpControl, aluResWriteEn, ldCZN, CC);
 
     input [4:0] DiToCU;
     input [3:0] IrToCU;
     input [2:0] CznToCU;
     input clk, rst, start;
     output reg done, pcInc, PcOrTR, regOrMem, RegBOr0, RegAOr0, pcLoadEn, diLoadEn, accumulatorWriteEn,
-      memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN;
+      memoryWriteEn, irWriteEn, trWriteEn, bRegWriteEn, aRegWriteEn, aluResWriteEn, ldCZN , CC;
     output reg [1:0] aluOpControl, accAddressSel;
 
     reg[4:0] ps, ns;
@@ -53,7 +53,7 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
     pcLoadEn <= 0; diLoadEn <= 0; accumulatorWriteEn <= 0;
     memoryWriteEn <= 0; irWriteEn <= 0; trWriteEn <= 0;
     bRegWriteEn <= 0; aRegWriteEn <= 0; aluResWriteEn <= 0;
-    ldCZN <= 0;
+    ldCZN <= 0; CC<=0;
     aluOpControl <= 2'b00; accAddressSel <= 2'b00;
     case (ps)
       IDLE: done <= 1;
@@ -76,7 +76,7 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
           case (IrToCU[3:1])
             3'b000: begin ldCZN <= 1; RegAOr0 <= 1; end
             3'b001: begin RegBOr0 <= 1; end
-            3'b010: begin ldCZN <= 1; end
+            3'b010: begin ldCZN <= 1; CC<=1; end
             3'b011: begin ldCZN <= 1; aluOpControl <= 2'b01; end
           endcase
         end
@@ -92,7 +92,7 @@ module Controller (clk, rst, start, pcInc, done, accAddressSel, PcOrTR, regOrMem
           aluResWriteEn <= 1;
           case (IrToCU[1:0])
             2'b00: begin RegBOr0 <= 1; end
-            2'b01: begin ldCZN <= 1; end
+            2'b01: begin ldCZN <= 1; CC<=1; end
             2'b10: begin ldCZN <= 1; aluOpControl <= 2'b01; end
             2'b11: begin ldCZN <= 1; aluOpControl <= 2'b10; end
           endcase
